@@ -38,19 +38,8 @@ interface HomeScreenProps {
   onSelectEvent?: (eventId: number) => void;
 }
 
-// REAL EVENT DATA WITH EXACT REORDERED LIST & UNIFORM FIXED BANNER FRAMES
+// REAL EVENT DATA WITH EXACT REORDERED LIST (BUSINESS LEADERS CONCLAVE IS 1st)
 const UPCOMING_EVENTS = [
-  {
-    id: 1,
-    title: "BCC UAE Chapter Meet Up @ Ibis Styles",
-    banner: "/event3.png",
-    date: "28 April 2026",
-    time: "6:00 PM - 9:00 PM",
-    venue: "Ibis Styles Dubai Jumeira",
-    organizer: "BCC UAE Chapter",
-    badge: "Executive Networking",
-    likes: 34
-  },
   {
     id: 2,
     title: "Double Your Profit in One Year: The BCC Strategy",
@@ -63,6 +52,17 @@ const UPCOMING_EVENTS = [
     organizer: "BCC Conclave Committee",
     badge: "Annual Conclave",
     likes: 89
+  },
+  {
+    id: 1,
+    title: "BCC UAE Chapter Meet Up @ Ibis Styles",
+    banner: "/event3.png",
+    date: "28 April 2026",
+    time: "6:00 PM - 9:00 PM",
+    venue: "Ibis Styles Dubai Jumeira",
+    organizer: "BCC UAE Chapter",
+    badge: "Executive Networking",
+    likes: 34
   },
   {
     id: 3,
@@ -338,7 +338,7 @@ export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackT
 
 
         {/* ========================================================================= */}
-        {/* SECTION 1: UPCOMING EVENTS (Clicking Card Opens Event Details Page) */}
+        {/* SECTION 1: UPCOMING EVENTS (Business Leaders Conclave is 1st) */}
         {/* ========================================================================= */}
         <div className="flex flex-col gap-5">
           <div className="flex items-center justify-between">
@@ -359,7 +359,7 @@ export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackT
                 theme === "dark" ? "natural-card-reflection" : "bg-white border-[#E0DFDC] shadow-sm"
               }`}
             >
-              {/* Sharp Top Banner Frame */}
+              {/* Sharp Top Banner Frame - Standardized Uniform Dimensions */}
               <div className="relative w-full h-52 sm:h-56 bg-black overflow-hidden rounded-t-none">
                 <Image
                   src={event.banner}
