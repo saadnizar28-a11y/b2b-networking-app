@@ -6,11 +6,9 @@ import {
   Search,
   User,
   Users,
-  LogOut,
   ChevronDown,
   ArrowLeft,
   Home as HomeIcon,
-  PlusCircle,
   Bell
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -161,7 +159,6 @@ export function MemberDirectory({ onNavigateToProfile, onNavigateToHome, onBackT
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("All Countries");
   const [selectedIndustry, setSelectedIndustry] = useState("All Industries");
-  const [isAdmin] = useState(true);
 
   const countriesList = ["All Countries", "UAE", "India"];
   const industriesList = [
@@ -349,65 +346,43 @@ export function MemberDirectory({ onNavigateToProfile, onNavigateToHome, onBackT
       </div>
 
       {/* ========================================================================= */}
-      {/* UNIFIED 5-TAB BOTTOM NAVIGATION BAR */}
+      {/* UNIFIED 4-TAB BOTTOM NAVIGATION BAR */}
       {/* ========================================================================= */}
       <div className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-3 py-2.5 z-40 border-t backdrop-blur-2xl transition-colors duration-300 ${
         theme === "dark"
           ? "bg-[#0B0B0D]/95 border-white/10"
           : "bg-[#F3F2EF]/95 border-black/10"
       }`}>
-        <div className="grid grid-cols-5 gap-1 items-center">
-          {/* Tab 1: Home */}
+        <div className="grid grid-cols-4 gap-1 items-center text-center">
           <button
             onClick={onNavigateToHome}
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <HomeIcon className="w-5 h-5" />
-            <span className="text-[10px]">Home</span>
+            <span className="text-[11px]">Home</span>
           </button>
 
-          {/* Tab 2: Directory (Active) */}
           <button
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] font-bold cursor-pointer"
           >
             <Users className="w-5 h-5" />
-            <span className="text-[10px]">Directory</span>
+            <span className="text-[11px]">Directory</span>
           </button>
 
-          {/* Tab 3: Create Post (Admin Center Button) */}
-          {isAdmin ? (
-            <button
-              onClick={() => alert("Admin Publisher Mode: Verified administrators can publish official announcements and events.")}
-              className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] hover:scale-105 transition-all cursor-pointer"
-            >
-              <div className="w-9 h-9 rounded-full bg-[#ED1B3B] text-white flex items-center justify-center shadow-md border-2 border-[#0B0B0D]">
-                <PlusCircle className="w-5 h-5" />
-              </div>
-              <span className="text-[9px] font-bold text-[#ED1B3B]">Create</span>
-            </button>
-          ) : (
-            <div className="opacity-20 flex flex-col items-center gap-1">
-              <PlusCircle className="w-5 h-5" />
-              <span className="text-[9px]">Create</span>
-            </div>
-          )}
-
-          {/* Tab 4: Notifications */}
           <button
             onClick={() => alert("Executive Notifications Center")}
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <Bell className="w-5 h-5" />
-            <span className="text-[10px]">Notifs</span>
+            <span className="text-[11px]">Notifs</span>
           </button>
 
-          {/* Tab 5: My Profile */}
           <button
             onClick={onNavigateToProfile}
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <User className="w-5 h-5" />
-            <span className="text-[10px]">Profile</span>
+            <span className="text-[11px]">Profile</span>
           </button>
         </div>
       </div>

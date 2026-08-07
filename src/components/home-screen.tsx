@@ -4,11 +4,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Search,
   Bell,
   User,
   Users,
-  PlusCircle,
   Home as HomeIcon,
   LogOut,
   Calendar,
@@ -156,7 +154,7 @@ const BUSINESS_NEWS = [
 export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackToLogin, onSelectEvent }: HomeScreenProps) {
   const { theme } = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isAdmin] = useState(true);
+  const [activeTab, setActiveTab] = useState<"home" | "directory" | "notifications" | "profile">("home");
   const [registeredEvents, setRegisteredEvents] = useState<Record<number, boolean>>({});
   const [likedPosts, setLikedPosts] = useState<Record<number, boolean>>({});
   const [savedPosts, setSavedPosts] = useState<Record<number, boolean>>({});
@@ -283,7 +281,7 @@ export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackT
       </AnimatePresence>
 
       {/* ========================================================================= */}
-      {/* TOP NAVIGATION BAR */}
+      {/* TOP NAVIGATION BAR (Clean - No Search / Notification Icons) */}
       {/* ========================================================================= */}
       <div className="w-full pt-3 pb-2.5 px-4 flex items-center justify-between z-30 sticky top-0 backdrop-blur-xl bg-opacity-90 border-b border-current/10">
         <div className="flex items-center gap-3">
@@ -298,25 +296,6 @@ export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackT
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => alert("Search BCC Executive Hub...")}
-            className={`p-2 rounded-full border transition-all cursor-pointer ${
-              theme === "dark" ? "bg-white/10 border-white/15 text-white" : "bg-white border-[#D0CFCC] text-gray-800 shadow-sm"
-            }`}
-          >
-            <Search className="w-4 h-4" />
-          </button>
-
-          <button
-            onClick={() => alert("You have 3 new executive notifications.")}
-            className={`p-2 rounded-full border relative transition-all cursor-pointer ${
-              theme === "dark" ? "bg-white/10 border-white/15 text-white" : "bg-white border-[#D0CFCC] text-gray-800 shadow-sm"
-            }`}
-          >
-            <Bell className="w-4 h-4" />
-            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#ED1B3B] animate-pulse" />
-          </button>
-
           <ThemeToggle />
         </div>
       </div>
@@ -338,7 +317,7 @@ export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackT
 
 
         {/* ========================================================================= */}
-        {/* SECTION 1: UPCOMING EVENTS (Business Leaders Conclave is 1st) */}
+        {/* SECTION 1: UPCOMING EVENTS */}
         {/* ========================================================================= */}
         <div className="flex flex-col gap-5">
           <div className="flex items-center justify-between">
@@ -359,7 +338,7 @@ export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackT
                 theme === "dark" ? "natural-card-reflection" : "bg-white border-[#E0DFDC] shadow-sm"
               }`}
             >
-              {/* Sharp Top Banner Frame - Standardized Uniform Dimensions */}
+              {/* Sharp Top Banner Frame */}
               <div className="relative w-full h-52 sm:h-56 bg-black overflow-hidden rounded-t-none">
                 <Image
                   src={event.banner}
@@ -565,19 +544,20 @@ export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackT
 
 
       {/* ========================================================================= */}
-      {/* UNIFIED 5-TAB BOTTOM NAVIGATION BAR */}
+      {/* UNIFIED 4-TAB BOTTOM NAVIGATION BAR (No Create Option) */}
       {/* ========================================================================= */}
       <div className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-3 py-2.5 z-40 border-t backdrop-blur-2xl transition-colors duration-300 ${
         theme === "dark"
           ? "bg-[#0B0B0D]/95 border-white/10"
           : "bg-[#F3F2EF]/95 border-black/10"
       }`}>
-        <div className="grid grid-cols-5 gap-1 items-center">
+        <div className="grid grid-cols-4 gap-1 items-center text-center">
           <button
+            onClick={() => setActiveTab("home")}
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] font-bold cursor-pointer"
           >
             <HomeIcon className="w-5 h-5" />
-            <span className="text-[10px]">Home</span>
+            <span className="text-[11px]">Home</span>
           </button>
 
           <button
@@ -585,32 +565,15 @@ export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackT
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <Users className="w-5 h-5" />
-            <span className="text-[10px]">Directory</span>
+            <span className="text-[11px]">Directory</span>
           </button>
-
-          {isAdmin ? (
-            <button
-              onClick={() => alert("Admin Publisher Mode: Verified administrators can publish official announcements and events.")}
-              className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] hover:scale-105 transition-all cursor-pointer"
-            >
-              <div className="w-9 h-9 rounded-full bg-[#ED1B3B] text-white flex items-center justify-center shadow-md border-2 border-[#0B0B0D]">
-                <PlusCircle className="w-5 h-5" />
-              </div>
-              <span className="text-[9px] font-bold text-[#ED1B3B]">Create</span>
-            </button>
-          ) : (
-            <div className="opacity-20 flex flex-col items-center gap-1">
-              <PlusCircle className="w-5 h-5" />
-              <span className="text-[9px]">Create</span>
-            </div>
-          )}
 
           <button
             onClick={() => alert("Executive Notifications Center")}
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <Bell className="w-5 h-5" />
-            <span className="text-[10px]">Notifs</span>
+            <span className="text-[11px]">Notifs</span>
           </button>
 
           <button
@@ -618,7 +581,7 @@ export function HomeScreen({ onNavigateToProfile, onNavigateToDirectory, onBackT
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <User className="w-5 h-5" />
-            <span className="text-[10px]">Profile</span>
+            <span className="text-[11px]">Profile</span>
           </button>
         </div>
       </div>

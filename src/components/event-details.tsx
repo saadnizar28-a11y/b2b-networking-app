@@ -10,16 +10,12 @@ import {
   MapPin,
   User,
   Users,
-  LogOut,
   Home as HomeIcon,
-  PlusCircle,
   Bell,
   Share2,
   Bookmark,
   CheckCircle2,
   ShieldCheck,
-  ExternalLink,
-  MessageSquare,
   Building2
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -189,7 +185,7 @@ export function EventDetails({
       {/* Main Scrollable Content Container */}
       <div className="w-full flex-1 px-4 sm:px-5 pt-3 flex flex-col gap-6 z-10 no-scrollbar overflow-y-auto">
         
-        {/* Banner Section (Full Banner Display) */}
+        {/* Banner Section */}
         <div className="relative w-full h-56 sm:h-64 rounded-[22px] overflow-hidden border border-current/10 bg-black shadow-md">
           <Image
             src={event.banner}
@@ -317,20 +313,20 @@ export function EventDetails({
       </div>
 
       {/* ========================================================================= */}
-      {/* UNIFIED 5-TAB BOTTOM NAVIGATION BAR */}
+      {/* UNIFIED 4-TAB BOTTOM NAVIGATION BAR */}
       {/* ========================================================================= */}
       <div className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-3 py-2.5 z-40 border-t backdrop-blur-2xl transition-colors duration-300 ${
         theme === "dark"
           ? "bg-[#0B0B0D]/95 border-white/10"
           : "bg-[#F3F2EF]/95 border-black/10"
       }`}>
-        <div className="grid grid-cols-5 gap-1 items-center">
+        <div className="grid grid-cols-4 gap-1 items-center text-center">
           <button
             onClick={onNavigateToHome || onBack}
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] font-bold cursor-pointer"
           >
             <HomeIcon className="w-5 h-5" />
-            <span className="text-[10px]">Home</span>
+            <span className="text-[11px]">Home</span>
           </button>
 
           <button
@@ -338,17 +334,7 @@ export function EventDetails({
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <Users className="w-5 h-5" />
-            <span className="text-[10px]">Directory</span>
-          </button>
-
-          <button
-            onClick={() => alert("Admin Publisher Mode: Verified administrators can publish official announcements and events.")}
-            className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] hover:scale-105 transition-all cursor-pointer"
-          >
-            <div className="w-9 h-9 rounded-full bg-[#ED1B3B] text-white flex items-center justify-center shadow-md border-2 border-[#0B0B0D]">
-              <PlusCircle className="w-5 h-5" />
-            </div>
-            <span className="text-[9px] font-bold text-[#ED1B3B]">Create</span>
+            <span className="text-[11px]">Directory</span>
           </button>
 
           <button
@@ -356,7 +342,7 @@ export function EventDetails({
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <Bell className="w-5 h-5" />
-            <span className="text-[10px]">Notifs</span>
+            <span className="text-[11px]">Notifs</span>
           </button>
 
           <button
@@ -364,7 +350,7 @@ export function EventDetails({
             className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <User className="w-5 h-5" />
-            <span className="text-[10px]">Profile</span>
+            <span className="text-[11px]">Profile</span>
           </button>
         </div>
       </div>
