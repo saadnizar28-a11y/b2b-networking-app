@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTheme } from "@/context/theme-context";
 
 interface GoogleButtonProps {
   onClick?: () => void;
@@ -8,6 +9,8 @@ interface GoogleButtonProps {
 }
 
 export function GoogleButton({ onClick, isLoading = false }: GoogleButtonProps) {
+  const { theme } = useTheme();
+
   return (
     <motion.button
       type="button"
@@ -36,7 +39,10 @@ export function GoogleButton({ onClick, isLoading = false }: GoogleButtonProps) 
         />
       </svg>
 
-      <span className="tracking-tight dark:text-white text-[#0B0B0D] font-semibold">
+      <span
+        className="tracking-tight font-semibold transition-colors duration-200"
+        style={{ color: theme === "light" ? "#000000" : "#FFFFFF" }}
+      >
         Continue with Google
       </span>
     </motion.button>

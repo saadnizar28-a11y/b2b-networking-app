@@ -1,41 +1,51 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowLeft, User, Users, LogOut, ExternalLink } from "lucide-react";
+import {
+  ArrowLeft,
+  User,
+  Users,
+  LogOut,
+  ExternalLink,
+  Camera,
+  Home as HomeIcon,
+  PlusCircle,
+  Bell
+} from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useTheme } from "@/context/theme-context";
 
 interface ExecutiveProfileProps {
   onBackToLogin?: () => void;
+  onNavigateToHome?: () => void;
   onNavigateToDirectory?: () => void;
 }
 
-export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: ExecutiveProfileProps) {
+export function ExecutiveProfile({ onBackToLogin, onNavigateToHome, onNavigateToDirectory }: ExecutiveProfileProps) {
   const { theme } = useTheme();
-  const [activeTab, setActiveTab] = useState<"profile" | "directory">("profile");
   const [isConnected, setIsConnected] = useState(false);
+  const [isAdmin] = useState(true);
 
   return (
     <div
       className={`w-full max-w-[430px] mx-auto min-h-screen flex flex-col justify-between relative select-none font-sans transition-colors duration-300 pb-20 ${
-        theme === "dark" ? "bg-[#0B0B0D] text-white" : "bg-[#F4F4F6] text-[#0B0B0D]"
+        theme === "dark" ? "bg-[#0B0B0D] text-white" : "bg-[#F3F2EF] text-[#191919]"
       }`}
     >
-      {/* Top Mobile Header Navigation */}
-      <div className="w-full pt-3 pb-2 px-5 flex items-center justify-between z-30 sticky top-0 backdrop-blur-xl bg-opacity-90 border-b border-current/10">
+      {/* Top Header Bar Navigation */}
+      <div className="w-full pt-3 pb-2.5 px-5 flex items-center justify-between z-30 sticky top-0 backdrop-blur-xl bg-opacity-90 border-b border-current/10">
         <motion.button
           whileTap={{ scale: 0.95 }}
-          onClick={() => onBackToLogin?.()}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer border ${
+          onClick={() => onNavigateToHome ? onNavigateToHome() : onBackToLogin?.()}
+          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer border light-red-glow ${
             theme === "dark"
               ? "bg-white/10 hover:bg-white/15 border-white/15 text-white"
-              : "bg-black/5 hover:bg-black/10 border-black/10 text-[#0B0B0D]"
+              : "bg-white hover:bg-gray-100 border-[#D0CFCC] text-[#191919] shadow-sm"
           }`}
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Login</span>
+          <span>Back</span>
         </motion.button>
 
         <div className="flex items-center gap-2">
@@ -47,7 +57,7 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
       <div className="w-full flex-1 px-4 sm:px-5 pt-4 flex flex-col gap-6 z-10 no-scrollbar overflow-y-auto">
         
         {/* ========================================================================= */}
-        {/* PROFILE HERO (Deep Matte Black Profile Frame) */}
+        {/* PROFILE HERO (LinkedIn Style Circular Monogram / Camera Upload Frame) */}
         {/* ========================================================================= */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -55,17 +65,22 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-center text-center pt-2 pb-1 w-full"
         >
-          {/* Profile Photo (Pure Deep Black Frame) */}
+          {/* LinkedIn Style Circular Avatar Frame */}
           <div className="relative mb-4">
-            <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-[#ED1B3B]/70 shadow-[0_12px_40px_rgba(0,0,0,0.9)] relative bg-[#0B0B0D]">
-              <Image
-                src="/shams-obil.png"
-                alt="Shams O'Bil"
-                fill
-                priority
-                unoptimized
-                className="object-cover object-top bg-[#0B0B0D]"
-              />
+            <div
+              className={`w-28 h-28 sm:w-32 sm:h-32 rounded-full border-2 border-[#ED1B3B]/70 shadow-[0_8px_30px_rgba(0,0,0,0.15)] relative flex items-center justify-center font-bold text-3xl sm:text-4xl select-none group cursor-pointer transition-all ${
+                theme === "dark"
+                  ? "bg-[#16161A] text-white"
+                  : "bg-white border-[#ED1B3B]/60 text-[#0B0B0D] shadow-md"
+              }`}
+              onClick={() => alert("Upload profile picture feature enabled.")}
+            >
+              <span className="drop-shadow-sm tracking-tighter">SO</span>
+
+              <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white text-[11px] font-semibold transition-opacity duration-200 gap-1">
+                <Camera className="w-5 h-5 text-[#ED1B3B]" />
+                <span>Add Photo</span>
+              </div>
             </div>
           </div>
 
@@ -74,17 +89,17 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
             Shams O&apos;Bil
           </h1>
 
-          <p className="text-[17px] font-semibold text-[#ED1B3B] mt-0.5">
+          <p className="text-[17px] font-bold text-[#ED1B3B] mt-0.5">
             CEO <span className="opacity-40">•</span> Synosys
           </p>
 
           {/* Location & Category Badges */}
-          <div className="flex items-center gap-2 mt-2 flex-wrap justify-center text-[13px] font-medium">
+          <div className="flex items-center gap-2 mt-2.5 flex-wrap justify-center text-[13px] font-medium">
             <span
-              className={`px-3 py-1 rounded-full border ${
+              className={`px-3.5 py-1 rounded-full border ${
                 theme === "dark"
                   ? "bg-white/[0.06] border-white/15 text-white/90"
-                  : "bg-black/[0.05] border-black/10 text-gray-800"
+                  : "bg-white border-[#D0CFCC] text-gray-800 shadow-sm"
               }`}
             >
               Dubai, UAE
@@ -95,7 +110,7 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
           </div>
 
           {/* Action Row */}
-          <div className="grid grid-cols-2 gap-3 w-full mt-5">
+          <div className="grid grid-cols-2 gap-3 w-full mt-6">
             <motion.button
               whileTap={{ scale: 0.96 }}
               onClick={() => setIsConnected(!isConnected)}
@@ -111,10 +126,10 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
             <motion.button
               whileTap={{ scale: 0.96 }}
               onClick={() => window.open("https://wa.me/971508746688", "_blank")}
-              className={`py-3.5 px-4 rounded-[20px] font-medium text-[15px] border flex items-center justify-center cursor-pointer transition-all ${
+              className={`py-3.5 px-4 rounded-[20px] font-medium text-[15px] border flex items-center justify-center cursor-pointer transition-all light-red-glow ${
                 theme === "dark"
                   ? "bg-white/10 hover:bg-white/15 border-white/15 text-white"
-                  : "bg-white hover:bg-gray-100 border-black/10 text-[#0B0B0D] shadow-sm"
+                  : "bg-white hover:bg-gray-100 border-[#D0CFCC] text-[#191919] shadow-sm"
               }`}
             >
               <span>WhatsApp</span>
@@ -133,7 +148,7 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
           className={`w-full p-6 rounded-[28px] border flex flex-col gap-4 ${
             theme === "dark"
               ? "natural-card-reflection"
-              : "bg-white border-black/10 shadow-sm"
+              : "bg-white border-[#E0DFDC] shadow-sm"
           }`}
         >
           <div className="border-b pb-3 border-current/10">
@@ -188,7 +203,7 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
           className={`w-full p-6 rounded-[28px] border flex flex-col gap-4 ${
             theme === "dark"
               ? "natural-card-reflection"
-              : "bg-white border-black/10 shadow-sm"
+              : "bg-white border-[#E0DFDC] shadow-sm"
           }`}
         >
           <div className="border-b pb-3 border-current/10">
@@ -198,13 +213,11 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
           </div>
 
           <div className="flex flex-col gap-3.5 text-[15px]">
-            {/* Company Name */}
             <div className="flex flex-col py-0.5">
               <span className="text-[12px] opacity-60 font-medium">Company Name</span>
               <span className="font-bold text-[17px] tracking-tight">Synosys</span>
             </div>
 
-            {/* Company Address */}
             <div className="flex flex-col py-1 border-t border-current/10 pt-3">
               <span className="text-[12px] opacity-60 font-medium">Company Address</span>
               <span className="font-semibold tracking-tight mt-0.5">
@@ -212,7 +225,6 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
               </span>
             </div>
 
-            {/* Primary City & Country */}
             <div className="grid grid-cols-2 gap-3 border-t border-current/10 pt-3">
               <div>
                 <span className="text-[12px] opacity-60 font-medium">Primary City</span>
@@ -224,7 +236,6 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
               </div>
             </div>
 
-            {/* Countries Covered */}
             <div className="flex flex-col py-1 border-t border-current/10 pt-3">
               <span className="text-[12px] opacity-60 font-medium">Countries Covered</span>
               <span className="font-semibold tracking-tight mt-0.5">
@@ -232,7 +243,6 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
               </span>
             </div>
 
-            {/* Company Website */}
             <div className="flex flex-col py-1 border-t border-current/10 pt-3">
               <span className="text-[12px] opacity-60 font-medium">Company Website</span>
               <a
@@ -245,7 +255,6 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
               </a>
             </div>
 
-            {/* Business Categories */}
             <div className="flex flex-col py-1 border-t border-current/10 pt-3">
               <span className="text-[12px] opacity-60 font-medium">Business Categories</span>
               <span className="font-semibold tracking-tight mt-0.5 text-[#ED1B3B]">
@@ -253,21 +262,19 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
               </span>
             </div>
 
-            {/* Services Offered */}
             <div className="flex flex-col py-1 border-t border-current/10 pt-3">
               <span className="text-[12px] opacity-60 font-medium">Services Offered</span>
               <p className={`text-[14px] leading-relaxed mt-1.5 p-3.5 rounded-2xl border ${
-                theme === "dark" ? "bg-white/[0.03] border-white/10 opacity-90" : "bg-gray-50 border-gray-200 text-gray-800"
+                theme === "dark" ? "bg-white/[0.03] border-white/10 opacity-90" : "bg-[#F8F8F6] border-[#E5E4E1] text-gray-800"
               }`}>
                 Most companies struggle to effectively utilize their Vehicles & Field staff. We have created a Software tool that helps them manage & control their vehicles, so their company start growing again and increase revenue.
               </p>
             </div>
 
-            {/* Company Vision */}
             <div className="flex flex-col py-1 border-t border-current/10 pt-3">
               <span className="text-[12px] opacity-60 font-medium">Company Vision</span>
               <p className={`text-[14px] leading-relaxed mt-1.5 p-3.5 rounded-2xl border ${
-                theme === "dark" ? "bg-white/[0.03] border-white/10 opacity-90" : "bg-gray-50 border-gray-200 text-gray-800"
+                theme === "dark" ? "bg-white/[0.03] border-white/10 opacity-90" : "bg-[#F8F8F6] border-[#E5E4E1] text-gray-800"
               }`}>
                 By 2035, we envision a globally connected world where one million IoT devices enable smarter mobility, safer assets, and more intelligent operations—positioning us as a trusted global leader in AI-powered IoT innovation.
               </p>
@@ -286,7 +293,7 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
           className={`w-full p-6 rounded-[28px] border flex flex-col gap-4 ${
             theme === "dark"
               ? "natural-card-reflection"
-              : "bg-white border-black/10 shadow-sm"
+              : "bg-white border-[#E0DFDC] shadow-sm"
           }`}
         >
           <div className="border-b pb-3 border-current/10">
@@ -311,7 +318,7 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
                 className={`px-3.5 py-2 rounded-xl text-[13px] font-semibold border transition-all ${
                   theme === "dark"
                     ? "bg-white/[0.05] border-white/12 text-white"
-                    : "bg-gray-100 border-gray-300 text-gray-900"
+                    : "bg-[#F3F2EF] border-[#D8D7D4] text-gray-900"
                 }`}
               >
                 {interest}
@@ -322,45 +329,65 @@ export function ExecutiveProfile({ onBackToLogin, onNavigateToDirectory }: Execu
       </div>
 
       {/* ========================================================================= */}
-      {/* FIXED BOTTOM NAVIGATION BAR */}
+      {/* UNIFIED 5-TAB BOTTOM NAVIGATION BAR */}
       {/* ========================================================================= */}
-      <div className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-4 py-3 z-40 border-t backdrop-blur-2xl transition-colors duration-300 ${
+      <div className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-3 py-2.5 z-40 border-t backdrop-blur-2xl transition-colors duration-300 ${
         theme === "dark"
-          ? "bg-[#0B0B0D]/90 border-white/10"
-          : "bg-[#F4F4F6]/90 border-black/10"
+          ? "bg-[#0B0B0D]/95 border-white/10"
+          : "bg-[#F3F2EF]/95 border-black/10"
       }`}>
-        <div className="grid grid-cols-3 gap-2">
-          {/* Tab 1: My Profile (Active) */}
+        <div className="grid grid-cols-5 gap-1 items-center">
+          {/* Tab 1: Home */}
           <button
-            onClick={() => setActiveTab("profile")}
-            className={`py-2 px-3 rounded-2xl flex flex-col items-center gap-1 transition-all cursor-pointer ${
-              activeTab === "profile"
-                ? "text-[#ED1B3B] font-bold"
-                : "opacity-50 hover:opacity-100"
-            }`}
+            onClick={onNavigateToHome}
+            className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
-            <User className="w-5 h-5" />
-            <span className="text-[11px]">My Profile</span>
+            <HomeIcon className="w-5 h-5" />
+            <span className="text-[10px]">Home</span>
           </button>
 
           {/* Tab 2: Directory */}
           <button
-            onClick={() => {
-              onNavigateToDirectory?.();
-            }}
-            className="py-2 px-3 rounded-2xl flex flex-col items-center gap-1 opacity-50 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
+            onClick={onNavigateToDirectory}
+            className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
             <Users className="w-5 h-5" />
-            <span className="text-[11px]">Directory</span>
+            <span className="text-[10px]">Directory</span>
           </button>
 
-          {/* Tab 3: Exit */}
+          {/* Tab 3: Create Post (Admin Center Button) */}
+          {isAdmin ? (
+            <button
+              onClick={() => alert("Admin Publisher Mode: Verified administrators can publish official announcements and events.")}
+              className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] hover:scale-105 transition-all cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-full bg-[#ED1B3B] text-white flex items-center justify-center shadow-md border-2 border-[#0B0B0D]">
+                <PlusCircle className="w-5 h-5" />
+              </div>
+              <span className="text-[9px] font-bold text-[#ED1B3B]">Create</span>
+            </button>
+          ) : (
+            <div className="opacity-20 flex flex-col items-center gap-1">
+              <PlusCircle className="w-5 h-5" />
+              <span className="text-[9px]">Create</span>
+            </div>
+          )}
+
+          {/* Tab 4: Notifications */}
           <button
-            onClick={() => onBackToLogin?.()}
-            className="py-2 px-3 rounded-2xl flex flex-col items-center gap-1 opacity-50 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
+            onClick={() => alert("Executive Notifications Center")}
+            className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
-            <LogOut className="w-5 h-5" />
-            <span className="text-[11px]">Exit</span>
+            <Bell className="w-5 h-5" />
+            <span className="text-[10px]">Notifs</span>
+          </button>
+
+          {/* Tab 5: My Profile (Active) */}
+          <button
+            className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] font-bold cursor-pointer"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-[10px]">Profile</span>
           </button>
         </div>
       </div>

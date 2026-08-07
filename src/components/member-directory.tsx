@@ -7,10 +7,11 @@ import {
   User,
   Users,
   LogOut,
-  MapPin,
-  Building2,
   ChevronDown,
-  ArrowLeft
+  ArrowLeft,
+  Home as HomeIcon,
+  PlusCircle,
+  Bell
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useTheme } from "@/context/theme-context";
@@ -35,7 +36,7 @@ const MEMBERS_DATA: Member[] = [
     industry: "IoT",
     location: "Dubai, UAE",
     country: "UAE",
-    avatar: "/shams-obil.png"
+    avatar: "SO"
   },
   {
     id: 2,
@@ -151,14 +152,16 @@ const MEMBERS_DATA: Member[] = [
 
 interface MemberDirectoryProps {
   onNavigateToProfile?: () => void;
+  onNavigateToHome?: () => void;
   onBackToLogin?: () => void;
 }
 
-export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDirectoryProps) {
+export function MemberDirectory({ onNavigateToProfile, onNavigateToHome, onBackToLogin }: MemberDirectoryProps) {
   const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("All Countries");
   const [selectedIndustry, setSelectedIndustry] = useState("All Industries");
+  const [isAdmin] = useState(true);
 
   const countriesList = ["All Countries", "UAE", "India"];
   const industriesList = [
@@ -197,22 +200,22 @@ export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDi
   return (
     <div
       className={`w-full max-w-[430px] mx-auto min-h-screen flex flex-col justify-between relative select-none font-sans transition-colors duration-300 pb-20 ${
-        theme === "dark" ? "bg-[#0B0B0D] text-white" : "bg-[#F4F4F6] text-[#0B0B0D]"
+        theme === "dark" ? "bg-[#0B0B0D] text-white" : "bg-[#F3F2EF] text-[#191919]"
       }`}
     >
-      {/* Top Mobile Header Navigation */}
-      <div className="w-full pt-3 pb-2 px-5 flex items-center justify-between z-30 sticky top-0 backdrop-blur-xl bg-opacity-90 border-b border-current/10">
+      {/* Top Header Bar Navigation */}
+      <div className="w-full pt-3 pb-2.5 px-5 flex items-center justify-between z-30 sticky top-0 backdrop-blur-xl bg-opacity-90 border-b border-current/10">
         <motion.button
           whileTap={{ scale: 0.95 }}
-          onClick={() => onBackToLogin?.()}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer border ${
+          onClick={() => onNavigateToHome ? onNavigateToHome() : onBackToLogin?.()}
+          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer border light-red-glow ${
             theme === "dark"
               ? "bg-white/10 hover:bg-white/15 border-white/15 text-white"
-              : "bg-black/5 hover:bg-black/10 border-black/10 text-[#0B0B0D]"
+              : "bg-white hover:bg-gray-100 border-[#D0CFCC] text-[#191919] shadow-sm"
           }`}
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Login</span>
+          <span>Back</span>
         </motion.button>
 
         <div className="flex items-center gap-2">
@@ -235,7 +238,7 @@ export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDi
 
         {/* Search Bar */}
         <div className={`relative flex items-center w-full rounded-2xl p-1 border transition-all ${
-          theme === "dark" ? "clean-input-glass" : "bg-white border-black/10 shadow-sm"
+          theme === "dark" ? "clean-input-glass" : "bg-white border-[#D0CFCC] shadow-sm"
         }`}>
           <div className="pl-3.5 pr-1 text-gray-400">
             <Search className="w-4 h-4 text-[#ED1B3B]" />
@@ -251,7 +254,6 @@ export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDi
 
         {/* Filters */}
         <div className="grid grid-cols-2 gap-2.5">
-          {/* Country Filter */}
           <div className="relative">
             <select
               value={selectedCountry}
@@ -259,7 +261,7 @@ export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDi
               className={`w-full py-2.5 px-3 rounded-xl text-xs font-semibold appearance-none border cursor-pointer focus:outline-none pr-8 ${
                 theme === "dark"
                   ? "bg-white/[0.06] border-white/12 text-white"
-                  : "bg-white border-black/10 text-gray-900 shadow-sm"
+                  : "bg-white border-[#D0CFCC] text-gray-900 shadow-sm"
               }`}
             >
               {countriesList.map((c) => (
@@ -271,7 +273,6 @@ export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDi
             <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none" />
           </div>
 
-          {/* Industry Filter */}
           <div className="relative">
             <select
               value={selectedIndustry}
@@ -279,7 +280,7 @@ export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDi
               className={`w-full py-2.5 px-3 rounded-xl text-xs font-semibold appearance-none border cursor-pointer focus:outline-none pr-8 ${
                 theme === "dark"
                   ? "bg-white/[0.06] border-white/12 text-white"
-                  : "bg-white border-black/10 text-gray-900 shadow-sm"
+                  : "bg-white border-[#D0CFCC] text-gray-900 shadow-sm"
               }`}
             >
               {industriesList.map((ind) => (
@@ -300,7 +301,7 @@ export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDi
         </div>
 
         {/* Members Cards List */}
-        <div className="flex flex-col gap-3 pb-6">
+        <div className="flex flex-col gap-3.5 pb-6">
           <AnimatePresence>
             {filteredMembers.map((member) => (
               <motion.div
@@ -315,40 +316,30 @@ export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDi
                     alert(`Viewing executive profile of ${member.name} (${member.position} @ ${member.company})`);
                   }
                 }}
-                className={`p-4 rounded-[24px] border flex items-center justify-between transition-all cursor-pointer hover:border-[#ED1B3B]/50 ${
+                className={`p-5 rounded-[18px] border flex items-center gap-4 transition-all cursor-pointer hover:border-[#ED1B3B]/60 ${
                   theme === "dark"
-                    ? "natural-card-reflection"
-                    : "bg-white border-black/10 shadow-sm"
+                    ? "bg-[#141417] border-white/10"
+                    : "bg-white border-[#E0DFDC] shadow-sm"
                 }`}
               >
-                <div className="flex items-center gap-3.5">
-                  {/* Avatar (Deep Black Background) */}
-                  <div className="w-12 h-12 rounded-full overflow-hidden border border-[#ED1B3B]/50 bg-[#0B0B0D] flex items-center justify-center text-[#ED1B3B] font-bold text-sm shrink-0">
-                    {member.id === 1 ? (
-                      <img src={member.avatar} alt={member.name} className="w-full h-full object-cover bg-[#0B0B0D]" />
-                    ) : (
-                      <span className="text-white font-bold">{member.avatar}</span>
-                    )}
-                  </div>
+                <div className={`w-12 h-12 rounded-full border-2 border-[#ED1B3B]/60 flex items-center justify-center font-bold text-sm shrink-0 ${
+                  theme === "dark" ? "bg-[#0B0B0D] text-white" : "bg-gray-100 text-[#0B0B0D]"
+                }`}>
+                  <span>{member.avatar}</span>
+                </div>
 
-                  {/* Details */}
-                  <div className="flex flex-col">
-                    <h3 className="font-bold text-[16px] tracking-tight leading-snug">
-                      {member.name}
-                    </h3>
-                    <p className="text-[13px] font-medium opacity-80 mt-0.5">
-                      {member.position} <span className="text-[#ED1B3B] font-bold">•</span> {member.company}
-                    </p>
+                <div className="flex flex-col text-left overflow-hidden">
+                  <h3 className="font-bold text-[17px] tracking-tight leading-snug">
+                    {member.name}
+                  </h3>
+                  <p className="text-[14px] font-medium opacity-85 mt-0.5">
+                    {member.position} <span className="text-[#ED1B3B] font-bold">•</span> {member.company}
+                  </p>
 
-                    <div className="flex items-center gap-2 mt-1 text-[11px] opacity-60">
-                      <span className="flex items-center gap-1 font-medium">
-                        <Building2 className="w-3 h-3 text-[#ED1B3B]" /> {member.industry}
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1 font-medium">
-                        <MapPin className="w-3 h-3" /> {member.location}
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-2 mt-1.5 text-[12px] opacity-65 font-medium">
+                    <span>{member.industry}</span>
+                    <span>•</span>
+                    <span>{member.location}</span>
                   </div>
                 </div>
               </motion.div>
@@ -358,38 +349,65 @@ export function MemberDirectory({ onNavigateToProfile, onBackToLogin }: MemberDi
       </div>
 
       {/* ========================================================================= */}
-      {/* FIXED BOTTOM NAVIGATION BAR */}
+      {/* UNIFIED 5-TAB BOTTOM NAVIGATION BAR */}
       {/* ========================================================================= */}
-      <div className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-4 py-3 z-40 border-t backdrop-blur-2xl transition-colors duration-300 ${
+      <div className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-3 py-2.5 z-40 border-t backdrop-blur-2xl transition-colors duration-300 ${
         theme === "dark"
-          ? "bg-[#0B0B0D]/90 border-white/10"
-          : "bg-[#F4F4F6]/90 border-black/10"
+          ? "bg-[#0B0B0D]/95 border-white/10"
+          : "bg-[#F3F2EF]/95 border-black/10"
       }`}>
-        <div className="grid grid-cols-3 gap-2">
-          {/* Tab 1: My Profile */}
+        <div className="grid grid-cols-5 gap-1 items-center">
+          {/* Tab 1: Home */}
           <button
-            onClick={() => onNavigateToProfile?.()}
-            className="py-2 px-3 rounded-2xl flex flex-col items-center gap-1 opacity-50 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
+            onClick={onNavigateToHome}
+            className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
-            <User className="w-5 h-5" />
-            <span className="text-[11px]">My Profile</span>
+            <HomeIcon className="w-5 h-5" />
+            <span className="text-[10px]">Home</span>
           </button>
 
           {/* Tab 2: Directory (Active) */}
           <button
-            className="py-2 px-3 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] font-bold cursor-pointer"
+            className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] font-bold cursor-pointer"
           >
             <Users className="w-5 h-5" />
-            <span className="text-[11px]">Directory</span>
+            <span className="text-[10px]">Directory</span>
           </button>
 
-          {/* Tab 3: Exit */}
+          {/* Tab 3: Create Post (Admin Center Button) */}
+          {isAdmin ? (
+            <button
+              onClick={() => alert("Admin Publisher Mode: Verified administrators can publish official announcements and events.")}
+              className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 text-[#ED1B3B] hover:scale-105 transition-all cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-full bg-[#ED1B3B] text-white flex items-center justify-center shadow-md border-2 border-[#0B0B0D]">
+                <PlusCircle className="w-5 h-5" />
+              </div>
+              <span className="text-[9px] font-bold text-[#ED1B3B]">Create</span>
+            </button>
+          ) : (
+            <div className="opacity-20 flex flex-col items-center gap-1">
+              <PlusCircle className="w-5 h-5" />
+              <span className="text-[9px]">Create</span>
+            </div>
+          )}
+
+          {/* Tab 4: Notifications */}
           <button
-            onClick={() => onBackToLogin?.()}
-            className="py-2 px-3 rounded-2xl flex flex-col items-center gap-1 opacity-50 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
+            onClick={() => alert("Executive Notifications Center")}
+            className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
           >
-            <LogOut className="w-5 h-5" />
-            <span className="text-[11px]">Exit</span>
+            <Bell className="w-5 h-5" />
+            <span className="text-[10px]">Notifs</span>
+          </button>
+
+          {/* Tab 5: My Profile */}
+          <button
+            onClick={onNavigateToProfile}
+            className="py-1.5 px-2 rounded-2xl flex flex-col items-center gap-1 opacity-60 hover:opacity-100 hover:text-[#ED1B3B] transition-all cursor-pointer"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-[10px]">Profile</span>
           </button>
         </div>
       </div>
