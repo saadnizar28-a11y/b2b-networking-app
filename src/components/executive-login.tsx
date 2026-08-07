@@ -12,21 +12,22 @@ import { StatusBar } from "@/components/ui/status-bar";
 import { GoogleButton } from "@/components/ui/google-button";
 import { Input } from "@/components/ui/input";
 import { PrimaryButton } from "@/components/ui/primary-button";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useTheme } from "@/context/theme-context";
 
-// Zod schema for login form validation
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Email address is required" })
-    .email({ message: "Please enter a valid email address" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters" }),
+  email: z.string().optional(),
+  password: z.string().optional(),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-export function ExecutiveLogin() {
+interface ExecutiveLoginProps {
+  onSuccess?: () => void;
+}
+
+export function ExecutiveLogin({ onSuccess }: ExecutiveLoginProps) {
+  const { theme } = useTheme();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -34,7 +35,6 @@ export function ExecutiveLogin() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -43,25 +43,36 @@ export function ExecutiveLogin() {
     },
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const handleLoginSuccess = async () => {
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 400));
     setIsLoading(false);
     setIsSuccess(true);
+    setTimeout(() => {
+      onSuccess?.();
+    }, 300);
   };
 
-  const handleGoogleSignIn = async () => {
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    setIsLoading(false);
-    setIsSuccess(true);
+  const onSubmit = (data: LoginFormValues) => {
+    handleLoginSuccess();
+  };
+
+  const handleGoogleSignIn = () => {
+    handleLoginSuccess();
   };
 
   return (
-    <div className="w-full max-w-[430px] mx-auto min-h-screen flex flex-col justify-between p-6 relative overflow-hidden select-none font-sans">
-      {/* Top Mobile Status Header */}
-      <div className="w-full pt-1 mb-2">
+    <div
+      className={`w-full max-w-[430px] mx-auto min-h-screen flex flex-col justify-between p-6 relative overflow-hidden select-none font-sans transition-colors duration-300 ${
+        theme === "dark" ? "bg-[#0B0B0D] text-white" : "bg-[#F4F4F6] text-[#0B0B0D]"
+      }`}
+    >
+      {/* Top Mobile Header Navigation with Theme Toggle Bulb */}
+      <div className="w-full pt-1 mb-2 flex items-center justify-between z-20">
         <StatusBar />
+        <div className="absolute top-3 right-5 z-30">
+          <ThemeToggle />
+        </div>
       </div>
 
       <motion.div
@@ -77,16 +88,20 @@ export function ExecutiveLogin() {
 
         {/* WELCOME HEADLINE */}
         <div className="text-center mb-7 w-full px-2">
-          <h1 className="text-[32px] sm:text-[34px] font-normal sm:font-medium text-white tracking-[-0.02em] leading-tight">
+          <h1 className="text-[32px] sm:text-[34px] font-normal sm:font-medium tracking-[-0.02em] leading-tight">
             Welcome Back
           </h1>
-          <p className="text-[#8E8E93] text-[15px] font-normal mt-2 tracking-normal leading-relaxed max-w-xs mx-auto">
+          <p
+            className={`text-[15px] font-normal mt-2 tracking-normal leading-relaxed max-w-xs mx-auto ${
+              theme === "dark" ? "text-[#8E8E93]" : "text-gray-600"
+            }`}
+          >
             Connect with verified professionals worldwide.
           </p>
         </div>
 
         {/* AUTHENTICATION CARD */}
-        <div className="w-full clean-app-card p-6 sm:p-7 flex flex-col gap-4">
+        <div className="w-full natural-card-reflection p-6 sm:p-7 flex flex-col gap-4">
           <AnimatePresence mode="wait">
             {isSuccess ? (
               <motion.div
@@ -99,17 +114,10 @@ export function ExecutiveLogin() {
                 <div className="w-14 h-14 rounded-full bg-[#ED1B3B]/10 border border-[#ED1B3B]/30 flex items-center justify-center text-[#ED1B3B]">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h3 className="text-lg font-medium text-white mt-1">Signed In Successfully</h3>
-                <p className="text-xs text-[#8E8E93] max-w-xs leading-relaxed">
-                  Connecting to BCC Executive Portal...
+                <h3 className="text-lg font-medium mt-1">Signed In Successfully</h3>
+                <p className={`text-xs max-w-xs leading-relaxed ${theme === "dark" ? "text-[#8E8E93]" : "text-gray-600"}`}>
+                  Opening Executive Profile...
                 </p>
-                <button
-                  type="button"
-                  onClick={() => setIsSuccess(false)}
-                  className="mt-3 text-xs text-[#ED1B3B] hover:underline font-medium cursor-pointer"
-                >
-                  Sign in with another account
-                </button>
               </motion.div>
             ) : (
               <motion.form
@@ -123,11 +131,11 @@ export function ExecutiveLogin() {
 
                 {/* ② Divider */}
                 <div className="flex items-center gap-3 my-0.5">
-                  <div className="h-[1px] flex-1 bg-white/[0.08]" />
-                  <span className="text-[12px] font-normal text-[#8E8E93]">
+                  <div className={`h-[1px] flex-1 ${theme === "dark" ? "bg-white/[0.08]" : "bg-black/[0.08]"}`} />
+                  <span className={`text-[12px] font-normal ${theme === "dark" ? "text-[#8E8E93]" : "text-gray-500"}`}>
                     or
                   </span>
-                  <div className="h-[1px] flex-1 bg-white/[0.08]" />
+                  <div className={`h-[1px] flex-1 ${theme === "dark" ? "bg-white/[0.08]" : "bg-black/[0.08]"}`} />
                 </div>
 
                 {/* ③ Email Input */}
@@ -135,7 +143,6 @@ export function ExecutiveLogin() {
                   type="email"
                   placeholder="Email address"
                   icon={Mail}
-                  error={errors.email?.message}
                   {...register("email")}
                   autoComplete="email"
                 />
@@ -145,7 +152,6 @@ export function ExecutiveLogin() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   icon={Lock}
-                  error={errors.password?.message}
                   {...register("password")}
                   autoComplete="current-password"
                   rightElement={
@@ -159,7 +165,7 @@ export function ExecutiveLogin() {
                       {showPassword ? (
                         <EyeOff className="w-4 h-4" />
                       ) : (
-                        <Eye className="w-4 h-4" />
+                        <Eye className="w-4 h-4 text-gray-400" />
                       )}
                     </button>
                   }
@@ -169,8 +175,10 @@ export function ExecutiveLogin() {
                 <div className="flex justify-end -mt-1">
                   <button
                     type="button"
-                    onClick={() => alert("Password reset instructions sent to your registered email.")}
-                    className="text-[13px] text-[#8E8E93] hover:text-white transition-colors duration-200 cursor-pointer font-normal"
+                    onClick={() => handleLoginSuccess()}
+                    className={`text-[13px] hover:underline transition-colors duration-200 cursor-pointer font-normal ${
+                      theme === "dark" ? "text-[#8E8E93]" : "text-gray-600"
+                    }`}
                   >
                     Forgot password?
                   </button>
@@ -196,11 +204,11 @@ export function ExecutiveLogin() {
         className="w-full flex flex-col items-center gap-4 pt-6 pb-2 z-10 text-center"
       >
         {/* Create Account Link (Only Create Account uses BCC Red) */}
-        <p className="text-[14px] text-[#8E8E93]">
+        <p className={`text-[14px] ${theme === "dark" ? "text-[#8E8E93]" : "text-gray-600"}`}>
           Don&apos;t have an account?{" "}
           <button
             type="button"
-            onClick={() => alert("Redirecting to executive account creation...")}
+            onClick={() => onSuccess?.()}
             className="text-[#ED1B3B] font-medium hover:underline cursor-pointer ml-0.5"
           >
             Create Account
@@ -209,27 +217,31 @@ export function ExecutiveLogin() {
 
         {/* Minimal Security Shield Divider & Terms/Privacy */}
         <div className="flex flex-col items-center gap-2.5">
-          <div className="flex items-center gap-2 text-white/20">
-            <div className="w-10 h-[1px] bg-white/10" />
-            <div className="w-5 h-5 rounded-full border border-white/15 flex items-center justify-center">
-              <Shield className="w-3 h-3 text-[#8E8E93]" />
+          <div className="flex items-center gap-2 opacity-30">
+            <div className={`w-10 h-[1px] ${theme === "dark" ? "bg-white" : "bg-black"}`} />
+            <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+              theme === "dark" ? "border-white" : "border-black"
+            }`}>
+              <Shield className="w-3 h-3" />
             </div>
-            <div className="w-10 h-[1px] bg-white/10" />
+            <div className={`w-10 h-[1px] ${theme === "dark" ? "bg-white" : "bg-black"}`} />
           </div>
 
-          <div className="flex items-center gap-3 text-[13px] text-[#8E8E93] tracking-tight">
+          <div className={`flex items-center gap-3 text-[13px] tracking-tight ${
+            theme === "dark" ? "text-[#8E8E93]" : "text-gray-600"
+          }`}>
             <button
               type="button"
               onClick={() => alert("Privacy Policy.")}
-              className="hover:text-white transition-colors cursor-pointer font-normal"
+              className="hover:underline transition-colors cursor-pointer font-normal"
             >
               Privacy
             </button>
-            <span className="text-[#8E8E93]">•</span>
+            <span>•</span>
             <button
               type="button"
               onClick={() => alert("Terms of Service.")}
-              className="hover:text-white transition-colors cursor-pointer font-normal"
+              className="hover:underline transition-colors cursor-pointer font-normal"
             >
               Terms
             </button>
@@ -237,7 +249,7 @@ export function ExecutiveLogin() {
         </div>
 
         {/* iOS Home Indicator Bar */}
-        <div className="w-36 h-1 bg-white/30 rounded-full mt-2 mx-auto" />
+        <div className={`w-36 h-1 rounded-full mt-2 mx-auto ${theme === "dark" ? "bg-white/30" : "bg-black/30"}`} />
       </motion.div>
     </div>
   );

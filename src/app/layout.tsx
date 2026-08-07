@@ -10,8 +10,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Executive Networking | BCC UAE Chapter",
-  description: "Connect with verified executive professionals worldwide. Official login screen for BCC UAE Chapter.",
-  keywords: ["Executive Networking", "BCC UAE", "B2B", "Verified Professionals", "Login"],
+  description: "Connect with verified executive professionals worldwide. Official app for BCC UAE Chapter.",
+  keywords: ["Executive Networking", "BCC UAE", "B2B", "Verified Professionals", "Profile"],
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -34,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} dark h-full`}>
-      <body className="h-full bg-[#0B0B0D] text-white selection:bg-[#ED1B3B]/30 selection:text-white antialiased subtle-grain">
+      <body className="h-full bg-[#0B0B0D] dark:bg-[#0B0B0D] light:bg-[#F4F4F6] text-white selection:bg-[#ED1B3B]/30 selection:text-white antialiased subtle-grain transition-colors duration-300">
         {children}
       </body>
     </html>

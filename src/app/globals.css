@@ -2,19 +2,28 @@
 
 @layer base {
   :root {
-    --background: 11 11 13;
-    --foreground: 255 255 255;
+    --background: 244 244 246;
+    --foreground: 11 11 13;
     --bcc-red: #ED1B3B;
   }
 }
 
-body {
+html.dark {
   background-color: #0B0B0D;
   color: #FFFFFF;
+}
+
+html.light {
+  background-color: #F4F4F6;
+  color: #0B0B0D;
+}
+
+body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Background noise texture */
@@ -22,43 +31,80 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E");
 }
 
-/* Pure Clean Minimal Glass Container */
-.clean-app-card {
-  background: rgba(20, 20, 22, 0.75);
+/* DARK MODE CARD & INPUT GLASS */
+.dark .natural-card-reflection {
+  background: radial-gradient(
+    ellipse 130% 110% at 0% 0%, 
+    rgba(255, 255, 255, 0.075) 0%, 
+    rgba(255, 255, 255, 0.02) 40%, 
+    rgba(16, 16, 19, 0.85) 100%
+  );
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-color: rgba(255, 255, 255, 0.14);
+  border-left-color: rgba(255, 255, 255, 0.12);
   border-radius: 34px;
-  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.7);
+  box-shadow: 
+    0 24px 60px -12px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 }
 
-/* Minimal Input Glass */
-.clean-input-glass {
+.dark .clean-input-glass {
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.07);
-  transition: all 0.2s ease;
+  color: #FFFFFF;
 }
 
-.clean-input-glass:focus-within {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Minimal Google Button */
-.clean-google-btn {
+.dark .clean-google-btn {
   background: #1B1B1E;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.2s ease;
+  color: #FFFFFF;
 }
 
-.clean-google-btn:hover {
+.dark .clean-google-btn:hover {
   background: #232327;
-  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* LIGHT MODE CARD & INPUT GLASS */
+.light .natural-card-reflection {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 34px;
+  box-shadow: 
+    0 20px 50px -10px rgba(0, 0, 0, 0.06),
+    0 4px 16px -2px rgba(0, 0, 0, 0.03);
+}
+
+.light .clean-input-glass {
+  background: #F0F0F3;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #0B0B0D;
+}
+
+.light .clean-input-glass input {
+  color: #0B0B0D !important;
+}
+
+.light .clean-input-glass input::placeholder {
+  color: #8E8E93 !important;
+}
+
+.light .clean-google-btn {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #0B0B0D;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.light .clean-google-btn:hover {
+  background: #F8F8F9;
 }
 
 /* Solid BCC Red Button */
 .clean-primary-btn {
   background-color: #ED1B3B;
+  color: #FFFFFF;
   transition: all 0.2s ease;
 }
 

@@ -14,7 +14,7 @@ export function GoogleButton({ onClick, isLoading = false }: GoogleButtonProps) 
       whileTap={{ scale: 0.985 }}
       onClick={onClick}
       disabled={isLoading}
-      className="w-full py-3.5 px-4 clean-google-btn rounded-[18px] flex items-center justify-center gap-3 text-white text-[15px] font-medium cursor-pointer disabled:opacity-50 select-none"
+      className="w-full py-3.5 px-4 clean-google-btn rounded-[18px] flex items-center justify-center gap-3 text-[15px] font-medium cursor-pointer disabled:opacity-50 select-none"
     >
       {/* Official Google G Logo SVG */}
       <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@ export function GoogleButton({ onClick, isLoading = false }: GoogleButtonProps) 
         />
       </svg>
 
-      <span className="tracking-tight text-white/95">
+      <span className="tracking-tight dark:text-white text-[#0B0B0D] font-semibold">
         Continue with Google
       </span>
     </motion.button>
