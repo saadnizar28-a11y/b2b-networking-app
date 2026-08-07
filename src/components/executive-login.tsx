@@ -58,29 +58,26 @@ export function ExecutiveLogin() {
   };
 
   return (
-    <div className="w-full max-w-[430px] mx-auto min-h-[844px] flex flex-col justify-between p-6 relative overflow-hidden select-none font-sans">
-      {/* Ambient Overhead Light Reflection (soft lighting pool radiating down onto the card) */}
-      <div className="absolute -top-36 left-1/2 -translate-x-1/2 w-[420px] h-[360px] bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent rounded-full blur-[90px] pointer-events-none" />
-
+    <div className="w-full max-w-[430px] mx-auto min-h-screen flex flex-col justify-between p-6 relative overflow-hidden select-none font-sans">
       {/* Top Mobile Status Header */}
-      <div className="w-full -mt-2 mb-2">
+      <div className="w-full pt-1 mb-2">
         <StatusBar />
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-col items-center flex-1 justify-center z-10 w-full"
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="flex flex-col items-center flex-1 justify-center z-10 w-full my-auto"
       >
         {/* TOP: Official BCC UAE Chapter Logo */}
-        <div className="pt-2 pb-6 sm:pb-8 flex justify-center w-full">
+        <div className="pt-2 pb-7 sm:pb-9 flex justify-center w-full">
           <BCCLogo width={210} height={75} />
         </div>
 
         {/* WELCOME HEADLINE */}
         <div className="text-center mb-7 w-full px-2">
-          <h1 className="text-[32px] sm:text-[34px] font-normal sm:font-medium text-white tracking-[-0.02em] leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+          <h1 className="text-[32px] sm:text-[34px] font-normal sm:font-medium text-white tracking-[-0.02em] leading-tight">
             Welcome Back
           </h1>
           <p className="text-[#8E8E93] text-[15px] font-normal mt-2 tracking-normal leading-relaxed max-w-xs mx-auto">
@@ -88,11 +85,8 @@ export function ExecutiveLogin() {
           </p>
         </div>
 
-        {/* AUTHENTICATION CARD (Specular Border Gradient & Top Light Reflection Shine) */}
-        <div className="w-full shine-card-border p-6 sm:p-7 flex flex-col gap-4 relative">
-          {/* Top Edge Specular Reflection Sheen */}
-          <div className="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
-
+        {/* AUTHENTICATION CARD */}
+        <div className="w-full clean-app-card p-6 sm:p-7 flex flex-col gap-4">
           <AnimatePresence mode="wait">
             {isSuccess ? (
               <motion.div
@@ -182,7 +176,7 @@ export function ExecutiveLogin() {
                   </button>
                 </div>
 
-                {/* ⑥ Primary Sign In Button (BCC Red #ED1B3B with specular highlight) */}
+                {/* ⑥ Primary Sign In Button (BCC Red #ED1B3B) */}
                 <div className="mt-1">
                   <PrimaryButton isLoading={isLoading} type="submit">
                     Sign In
@@ -198,7 +192,7 @@ export function ExecutiveLogin() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
         className="w-full flex flex-col items-center gap-4 pt-6 pb-2 z-10 text-center"
       >
         {/* Create Account Link (Only Create Account uses BCC Red) */}

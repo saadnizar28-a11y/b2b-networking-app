@@ -15,13 +15,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full flex flex-col gap-1">
         <div
-          className={`relative flex items-center w-full rounded-[18px] shine-input-field py-1 ${
+          className={`relative flex items-center w-full rounded-[18px] clean-input-glass py-1 ${
             error ? "border-[#ED1B3B]/60" : ""
           } ${className}`}
         >
           {Icon && (
             <div className="pl-4 pr-1.5 flex items-center pointer-events-none text-[#8E8E93]">
-              <div className="w-7 h-7 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center shadow-inner">
+              <div className="w-7 h-7 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
                 <Icon className="w-3.5 h-3.5 text-[#A1A1A6]" />
               </div>
             </div>

@@ -27,12 +27,12 @@ export function PrimaryButton({
       transition={{ duration: 0.15 }}
       onClick={onClick}
       disabled={disabled || isLoading}
-      className={`w-full py-4 px-6 shine-primary-btn text-white rounded-[20px] font-semibold text-[16px] tracking-tight flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 select-none ${className}`}
+      className={`w-full py-4 px-6 clean-primary-btn text-white rounded-[20px] font-semibold text-[16px] tracking-tight flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 select-none ${className}`}
     >
       {isLoading ? (
         <Loader2 className="w-5 h-5 animate-spin text-white" />
       ) : (
-        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">{children}</span>
+        <span>{children}</span>
       )}
     </motion.button>
   );
